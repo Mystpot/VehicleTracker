@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long catId;
     private String name;
     private double price;
 
@@ -19,13 +19,13 @@ public class Category implements Serializable {
     }
 
     public static class Builder{
-        private long id;
+        private long catId;
         private String name;
         private double price;
 
         public Builder id(long value)
         {
-            this.id = value;
+            this.catId = value;
             return this;
         }
         public Builder name(String value)
@@ -45,14 +45,14 @@ public class Category implements Serializable {
     }
 
     public Category(Builder builder) {
-        this.id = builder.id;
+        this.catId = builder.catId;
         this.name = builder.name;
         this.price = builder.price;
     }
 
 
     public long getId() {
-        return id;
+        return catId;
     }
 
     public String getName() {
@@ -70,11 +70,11 @@ public class Category implements Serializable {
 
         Category category = (Category) o;
 
-        return id == category.id;
+        return catId == category.catId;
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (catId ^ (catId >>> 32));
     }
 }
