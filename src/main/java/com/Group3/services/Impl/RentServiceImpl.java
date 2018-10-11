@@ -50,5 +50,6 @@ public class RentServiceImpl implements RentService
     public Rent findCustomerId(int customerId) {
         return rentRepository.findByCustomerId(customerId);
     }
+
 }
 

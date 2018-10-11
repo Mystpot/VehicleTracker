@@ -9,4 +9,5 @@ public interface RentRepository extends CrudRepository<Rent, Integer>
 
     Rent findByCustomerId(int customerId);
 
+
 }

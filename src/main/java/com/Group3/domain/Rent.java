@@ -44,6 +44,7 @@ public class Rent implements Serializable
         return outstanding;
     }
 
+
     public Rent(Builder builder)
     {
        this.customerId = builder.customerId;
@@ -98,6 +99,7 @@ public class Rent implements Serializable
             this.totalPrice = value;
             return this;
         }
+
 
         public Rent build() {
             return new Rent(this);

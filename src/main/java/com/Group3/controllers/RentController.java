@@ -74,10 +74,11 @@ public class RentController
     }
 
     @CrossOrigin
-    @GetMapping(path="/findAllByCustomer/{customerId}")
-    public @ResponseBody Iterable<Rent> findAllByCustomerId(@PathVariable("customerId") int customerId)
+    @GetMapping(path="/findByCustomerId/{customerId}")
+    public @ResponseBody ResponseEntity findByCustomerId(@PathVariable("customerId") int customerId)
     {
-        return rentService.findAllByCustomerId(customerId);
+        rentService.findAllByCustomerId(customerId);
+        return new ResponseEntity(rent, HttpStatus.OK);
     }
 
 
