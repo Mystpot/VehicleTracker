@@ -41,14 +41,14 @@ public class HistoryController
     @CrossOrigin
     @PostMapping(path="/{invoiceId}/{rentId}/addHistory")
     public @ResponseBody
-    History createHistory(@PathVariable long invoiceId, @PathVariable long rentId, boolean rented, boolean outstanding)
+    History createHistory(@PathVariable long invoiceId, @PathVariable int rentId, boolean rented, boolean outstanding)
     {
         Map<String, Boolean> values = new HashMap<>();
         values.put("rented",rented);
         values.put("outstanding",outstanding);
 
       Optional<Invoices> invoices = invoiceService.read(invoiceId);
-      Optional<Rent> rent = rentService.read(rentId);
+      Optional<Rent> rent = rentService.readById(rentId);
 
       if (invoices.isPresent())
       {
@@ -82,10 +82,10 @@ public class HistoryController
     @CrossOrigin
     @PostMapping(path = "/{invoiceId}/{rentId}/updateHistory")
     public
-    @ResponseBody History updateHistory(@PathVariable long invoiceId,@PathVariable long rentId,@RequestParam long id, boolean rented, boolean outstanding)
+    @ResponseBody History updateHistory(@PathVariable long invoiceId,@PathVariable int rentId,@RequestParam long id, boolean rented, boolean outstanding)
     {
         Optional<Invoices> invoices = invoiceService.read(invoiceId);
-        Optional<Rent> rent = rentService.read(rentId);
+        Optional<Rent> rent = rentService.readById(rentId);
 
         if (invoices.isPresent())
         {

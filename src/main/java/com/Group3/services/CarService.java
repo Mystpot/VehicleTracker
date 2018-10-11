@@ -16,4 +16,6 @@ public interface CarService {
 
     //function to read all cars based on the category
     Iterable<Car> findAllById(Category category);
+
+    Car findByCustomerId(int customerId);
 }

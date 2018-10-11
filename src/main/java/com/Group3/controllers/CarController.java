@@ -33,27 +33,12 @@ public class CarController {
     private CategoryServiceImpl categoryService;
 
     @CrossOrigin
-    @PostMapping(path = "/{categoryId}/addCar")
+    @PostMapping(path = "/addCar")
     public @ResponseBody
-    ResponseEntity create(@PathVariable long categoryId,
-                          @RequestParam String make, @RequestParam String model,
-                          @RequestParam int year, @RequestParam String numberPlate,
-                          @RequestParam boolean status)
+    ResponseEntity create(@RequestBody Car car)
     {
-        Map<String, String> stringValues = new HashMap<String, String>();
-        stringValues.put("make", make);
-        stringValues.put("model", model);
-        stringValues.put("numberPlate", numberPlate);
 
-        Optional<Category> category = categoryService.read(categoryId);
-
-        if (category.isPresent())
-        {
-            cat = category.get();
-        }
-        car = CarFactory.getCar(cat, stringValues, year, status);
-
-        if(StringUtils.isEmpty(car.getCategory()) || StringUtils.isEmpty(car.getMake()) || StringUtils.isEmpty(car.getModel()) || StringUtils.isEmpty(car.getYear()) ||
+        if(StringUtils.isEmpty(car.getCategoryId()) || StringUtils.isEmpty(car.getMake()) || StringUtils.isEmpty(car.getModel()) || StringUtils.isEmpty(car.getYear()) ||
                 StringUtils.isEmpty(car.getNumberPlate()))
         {
             return new ResponseEntity("Need extra information", HttpStatus.NO_CONTENT);
@@ -63,45 +48,28 @@ public class CarController {
         return new ResponseEntity(car, HttpStatus.OK);
     }
     @CrossOrigin
-    @GetMapping(path = "/readCar")
-    public @ResponseBody ResponseEntity read(@RequestParam long id)
+    @GetMapping(path = "/readCar/{id}")
+    public @ResponseBody ResponseEntity findByCustomerId(@PathVariable("id") int customerId)
     {
-        Optional <Car> car = carService.read(id);
 
-        if(!car.isPresent())
+        Car car = carService.findByCustomerId(customerId);
+        System.out.println(customerId);
+        if(car.getCustomerId() == 0)
         {
-            return new ResponseEntity("No car found for car" + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity("No car found for customer" + customerId, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(car, HttpStatus.OK);
     }
 
     @CrossOrigin
     //function to edit the car according to the transaction
-    @GetMapping (path = "/{categoryId}/updateCar")
-    public @ResponseBody Car update(@PathVariable long categoryId, @RequestParam long id, @RequestParam String make, @RequestParam String model,
-                                    @RequestParam int year, @RequestParam String numberPlate,
-                                    @RequestParam boolean status)
+    @RequestMapping (value = "/updateCar", method = RequestMethod.PUT)
+    public ResponseEntity update(@RequestBody Car car)
     {
 
-        //category = categoryService.read(categoryId);
-        Optional<Category> category = categoryService.read(categoryId);
+        carService.update(car);
 
-        if (category.isPresent())
-        {
-            cat2 = category.get();
-        }
-
-        Car carUpdate = new Car.Builder()
-                .id(id)
-                .make(make)
-                .model(model)
-                .year(year)
-                .numberPlate(numberPlate)
-                .status(status)
-                .category(cat2)
-                .build();
-
-        return carService.update(carUpdate);
+        return new ResponseEntity(car, HttpStatus.OK);
     }
 
     @CrossOrigin

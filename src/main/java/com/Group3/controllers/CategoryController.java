@@ -37,8 +37,8 @@ public class CategoryController {
         return new ResponseEntity(category, HttpStatus.OK);
     }
     @CrossOrigin
-    @GetMapping (path="/findByName")
-    public @ResponseBody Category findByName(@RequestParam String name)
+    @GetMapping (path="/findByName/{name}")
+    public @ResponseBody Category findByName(@PathVariable("name") String name)
     {
         return categoryService.findByName(name);
     }
@@ -51,7 +51,7 @@ public class CategoryController {
 
         if(!cat.isPresent())
         {
-            return new ResponseEntity("No car found for car" + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity("No category found for car" + id, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(cat, HttpStatus.OK);
     }

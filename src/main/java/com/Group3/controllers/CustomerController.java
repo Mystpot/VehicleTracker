@@ -35,11 +35,12 @@ public class CustomerController {
     @PostMapping(path = "/addCustomer")
     public
     @ResponseBody
-    ResponseEntity addCustomer(@RequestParam String name, @RequestParam String surname, @RequestParam String email,
+    ResponseEntity addCustomer(@RequestBody Customer customer/*@RequestParam String name, @RequestParam String surname, @RequestParam String email,
                                @RequestParam String city, @RequestParam String province, @RequestParam String complex,
-                               @RequestParam String street, @RequestParam int houseNumber, @RequestParam int postalCode)
+                               @RequestParam String street, @RequestParam String password, @RequestParam String role,
+                               @RequestParam int houseNumber, @RequestParam int postalCode*/)
     {
-        Map<String, String> stringValues = new HashMap<String, String>();
+      /*  Map<String, String> stringValues = new HashMap<String, String>();
         Map<String, Integer> intValues = new HashMap<String, Integer>();
         stringValues.put("name", name);
         stringValues.put("surname", surname);
@@ -48,11 +49,13 @@ public class CustomerController {
         stringValues.put("province", province);
         stringValues.put("complex", complex);
         stringValues.put("street", street);
+        stringValues.put("password", password);
+        stringValues.put("role", role);
         intValues.put("houseNumber", houseNumber);
-        intValues.put("postalCode", postalCode);
+        intValues.put("postalCode", postalCode); */
 
 
-        customer = CustomerFactory.getCustomer(stringValues, intValues);
+       // customer = CustomerFactory.getCustomer(stringValues, intValues);
 
         customerService.create(customer);
 
@@ -83,7 +86,8 @@ public class CustomerController {
     @ResponseBody
     Customer updateCustomer(@RequestParam long customerId, @RequestParam String name, @RequestParam String surname, @RequestParam String email,
                             @RequestParam String city, @RequestParam String province, @RequestParam String complex,
-                            @RequestParam String street, @RequestParam int houseNumber, @RequestParam int postalCode) {
+                            @RequestParam String street, @RequestParam int houseNumber, @RequestParam int postalCode,
+                            @RequestParam String password, @RequestParam String role) {
 
 
         //customerService.read(customerId);
@@ -98,6 +102,8 @@ public class CustomerController {
                 .street(street)
                 .houseNumber(houseNumber)
                 .postalCode(postalCode)
+                .password(password)
+                .role(role)
                 .build();
 
         return customerService.update(customerUpdate);
@@ -119,8 +125,8 @@ public class CustomerController {
     }
 
     @CrossOrigin
-    @GetMapping(path = "/findByEmail")
-    public @ResponseBody Customer availableEmail(String email)
+    @GetMapping(path = "/findByEmail/{email}")
+    public @ResponseBody Customer availableEmail(@PathVariable("email")String email)
     {
         return customerService.availableEmail(email);
     }

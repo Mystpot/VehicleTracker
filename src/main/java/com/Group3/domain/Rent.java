@@ -9,7 +9,8 @@ public class Rent implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
+    private int customerId;
     private String rentDate;
     private String returntDate;
     private BigDecimal totalPrice;
@@ -18,14 +19,7 @@ public class Rent implements Serializable
 
     private Rent(){};
 
-    @OneToOne
-    @JoinColumn(name = "carID")
-    private Car car;
-
-    @ManyToOne
-    private Orders order;
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
     public String getRentDate() {
@@ -37,16 +31,13 @@ public class Rent implements Serializable
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
-    public Car getCar() {
-        return car;
-    }
 
     public int getRentalDays() {
         return rentalDays;
     }
 
-    public Orders getOrder() {
-        return order;
+    public int getCustomerId() {
+        return customerId;
     }
 
     public boolean isOutstanding() {
@@ -55,24 +46,21 @@ public class Rent implements Serializable
 
     public Rent(Builder builder)
     {
-        this.order = builder.order;
+       this.customerId = builder.customerId;
         this.id = builder.id;
         this.rentDate = builder.rentDate;
         this.returntDate = builder.returntDate;
         this.totalPrice = builder.totalPrice;
         this.rentalDays = builder.rentalDays;
         this.outstanding = builder.outstanding;
-
-        this.car = builder.car;
     }
 
     public static  class Builder {
-        private Long id;
+        private int id;
         private String rentDate;
         private String returntDate;
         private BigDecimal totalPrice;
-        private Car car;
-        private Orders order;
+        private int customerId;
         private int rentalDays;
         private boolean outstanding;
 
@@ -86,12 +74,12 @@ public class Rent implements Serializable
             this.rentalDays = value;
             return this;
         }
-        public Builder order(Orders value)
-        {
-            this.order = value;
+       public Builder customerId(int value)
+       {
+           this.customerId = value;
             return this;
         }
-        public Builder id(Long value) {
+        public Builder id(int value) {
             this.id = value;
             return this;
         }
@@ -111,29 +99,9 @@ public class Rent implements Serializable
             return this;
         }
 
-
-        public Builder car(Car value) {
-            this.car = value;
-            return this;
-        }
-
         public Rent build() {
             return new Rent(this);
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Rent rent = (Rent) o;
-
-        return id.equals(rent.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
 }

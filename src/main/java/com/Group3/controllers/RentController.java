@@ -1,10 +1,12 @@
 package com.Group3.controllers;
 
 import com.Group3.domain.Car;
+import com.Group3.domain.Customer;
 import com.Group3.domain.Orders;
 import com.Group3.domain.Rent;
 import com.Group3.factories.RentFactory;
 import com.Group3.services.Impl.CarServiceImpl;
+import com.Group3.services.Impl.CustomerServiceImpl;
 import com.Group3.services.Impl.OrderServiceImpl;
 import com.Group3.services.Impl.RentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,90 +23,41 @@ import java.util.Optional;
 public class RentController
 {
     private Rent rent;
-    private Car car;
-    private Orders order;
-    private Car car2;
-    private Orders order2;
 
     @Autowired
     private RentServiceImpl rentService;
 
-    @Autowired
-    private CarServiceImpl carService;
-
-    @Autowired
-    private OrderServiceImpl orderService;
-
     @CrossOrigin
-    @PostMapping(path="/{orderId}/{carId}/rentCar")
+    @PostMapping(path="/rentCar")
     public @ResponseBody
-    Rent create(@PathVariable long orderId, @PathVariable long carId,
-                @RequestParam String rentDate, @RequestParam String returnDate,
-                @RequestParam BigDecimal totalPrice, @RequestParam int rentalDays, @RequestParam boolean outstanding)
+    Rent create(@RequestBody Rent rent)
     {
 
-        Optional<Car> car = carService.read(carId);
-
-        if (car.isPresent())
-        {
-            car2 = car.get();
-        }
-
-        Optional<Orders> order = orderService.read(orderId);
-
-        if (order.isPresent()) {
-            order2 = order.get();
-        }
-
-        rent = RentFactory.getRent(car2, rentDate,returnDate,totalPrice,order2, rentalDays, outstanding);
         return rentService.create(rent);
 
     }
 
     @CrossOrigin
-    @GetMapping (path="/findRentedItem")
-    public @ResponseBody ResponseEntity findByCustomer (@RequestParam Long id)
+    @GetMapping (path="/findRentedItem/{id}")
+    public @ResponseBody ResponseEntity findByCustomer (@PathVariable("id") int customerId)
     {
-        Optional <Rent> rent = rentService.read(id);
-
-        if(!rent.isPresent())
+        Rent rent = rentService.findCustomerId(customerId);
+        System.out.println(customerId);
+        if(rent.getCustomerId() == 0)
         {
-            return new ResponseEntity("No rent found for customer" + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity("No rent found for customer" + customerId, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(rent, HttpStatus.OK);
     }
 
     @CrossOrigin
-    @GetMapping (path="/{orderId}/{carId}/updateRent")
-    public @ResponseBody Rent updateRent (@PathVariable long orderId, @PathVariable long carId,
-                                          @RequestParam Long rentId,
-                                          @RequestParam String rentDate, @RequestParam String returnDate,
-                                          @RequestParam BigDecimal totalPrice, @RequestParam int rentalDays,
-                                          @RequestParam boolean outstanding) {
+    @RequestMapping (value = "/updateRent", method = RequestMethod.PUT)
+    public ResponseEntity update(@RequestBody Rent rent)
+    {
 
-        Optional<Car> car = carService.read(carId);
+        rentService.update(rent);
 
-        if (car.isPresent())
-        {
-            car2 = car.get();
-        }
-
-        Optional<Orders> order = orderService.read(orderId);
-
-        if (order.isPresent()) {
-            order2 = order.get();
-        }
-
-        Rent rentUpdate = new Rent.Builder()
-                .id(rentId)
-                .rentDate(rentDate)
-                .returntDate(returnDate)
-                .rentalDays(rentalDays)
-                .totalPrice(totalPrice)
-                .outstanding(outstanding)
-                .build();
-
-        return rentService.update(rentUpdate);
+        return new ResponseEntity(rent, HttpStatus.OK);
     }
     @CrossOrigin
     @DeleteMapping (path="/deleteRent")
@@ -118,6 +71,13 @@ public class RentController
     public @ResponseBody Iterable<Rent> getAllRentedCars()
     {
         return rentService.readAll();
+    }
+
+    @CrossOrigin
+    @GetMapping(path="/findAllByCustomer/{customerId}")
+    public @ResponseBody Iterable<Rent> findAllByCustomerId(@PathVariable("customerId") int customerId)
+    {
+        return rentService.findAllByCustomerId(customerId);
     }
 
 

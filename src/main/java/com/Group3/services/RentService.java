@@ -7,9 +7,10 @@ import java.util.Optional;
 public interface RentService
 {
     Rent create(Rent rent);
-    Optional<Rent> read(long id);
+    Optional<Rent> readById(int id);
     Rent update(Rent rent);
     void delete(Rent id);
     Iterable<Rent> readAll();
-    Iterable<Rent> findAllById(long id);
+    Iterable<Rent> findAllByCustomerId(int customerId);
+    Rent findCustomerId(int customerId);
 }

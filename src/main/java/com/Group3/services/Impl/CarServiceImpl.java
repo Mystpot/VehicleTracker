@@ -49,5 +49,11 @@ public class CarServiceImpl implements CarService {
         return carRepository.findAllById(category);
     }
 
+    @Override
+    public Car findByCustomerId(int customerId)
+    {
+        return carRepository.findByCustomerId(customerId);
+    }
+
 
 }

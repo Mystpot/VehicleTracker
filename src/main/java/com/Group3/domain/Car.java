@@ -14,10 +14,8 @@ import java.io.Serializable;
         private int year;
         private String numberPlate;
         private boolean status;
-
-
-        @ManyToOne
-        private Category category;
+        private int categoryId;
+        private int customerId;
 
         private Car(){
 
@@ -29,8 +27,9 @@ import java.io.Serializable;
             this.model = builder.model;
             this.year = builder.year;
             this.numberPlate = builder.numberPlate;
-            this.category = builder.category;
+            this.categoryId = builder.categoryId;
             this.status = builder.status;
+            this.customerId = builder.customerId;
         }
 
         public static class Builder{
@@ -40,7 +39,8 @@ import java.io.Serializable;
             private int year;
             private String numberPlate;
             private boolean status;
-            private Category category;
+            private int categoryId;
+            private int customerId;
 
             public Builder id(long value)
             {
@@ -72,10 +72,16 @@ import java.io.Serializable;
                 this.status = value;
                 return this;
             }
-            public Builder category(Category value)
+            public Builder categoryId(int value)
             {
-                this.category = value;
+                this.categoryId = value;
                 return this;
+            }
+
+            public Builder customerId(int value)
+            {
+                this.customerId = value;
+                        return this;
             }
             public Car build()
             {
@@ -107,8 +113,11 @@ import java.io.Serializable;
             return status;
         }
 
-        public Category getCategory() {
-            return category;
+        public int getCategoryId() {
+            return categoryId;
+        }
+
+        public int getCustomerId() { return customerId;
         }
 
         @Override

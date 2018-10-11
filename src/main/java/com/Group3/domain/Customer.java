@@ -12,6 +12,8 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name,surname,email;
+    private String password;
+    private String role;
     private int houseNumber;
     private String city;
     private String province;
@@ -68,6 +70,10 @@ public class Customer implements Serializable {
         return street;
     }
 
+    public String getPassword() { return password; }
+
+    public String getRole() { return role; }
+
     public Customer(Builder builder)
     {
         this.id = builder.id;
@@ -80,6 +86,8 @@ public class Customer implements Serializable {
         this.postalCode = builder.postalCode;
         this.complex = builder.complex;
         this.street = builder.street;
+        this.password = builder.password;
+        this.role = builder.role;
         //this.invoices = builder.invoices;
     }
 
@@ -92,6 +100,8 @@ public class Customer implements Serializable {
         private int postalCode;
         private String complex;
         private String street;
+        private String password;
+        private String role;
         // private List<Invoices> invoices;
 
         //        public Builder invoices (List<Invoices> value)
@@ -148,6 +158,17 @@ public class Customer implements Serializable {
             this.email = value;
             return this;
         }
+
+        public Builder password(String value) {
+            this.password = value;
+            return this;
+        }
+
+        public Builder role(String value) {
+            this.role = value;
+            return this;
+        }
+
 
         public Customer build() {
             return new Customer(this);

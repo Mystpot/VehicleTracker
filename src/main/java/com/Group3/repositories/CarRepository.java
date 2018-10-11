@@ -7,4 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface CarRepository extends CrudRepository<Car, Long> {
     Iterable<Car> findAllById(Category category);
     Car findCarsById(Long id);
+    Car findByCustomerId(int customerId);
 }

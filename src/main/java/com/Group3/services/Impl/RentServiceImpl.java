@@ -22,8 +22,8 @@ public class RentServiceImpl implements RentService
     }
 
     @Override
-    public Optional<Rent> read(long id) {
-        return rentRepository.findById(id);
+    public Optional<Rent> readById(int customerId) {
+        return rentRepository.findById(customerId);
     }
 
     @Override
@@ -42,8 +42,13 @@ public class RentServiceImpl implements RentService
     }
 
     @Override
-    public Iterable<Rent> findAllById(long id) {
-        return rentRepository.findAllById(id);
+    public Iterable<Rent> findAllByCustomerId(int customerId) {
+        return rentRepository.findAllByCustomerId(customerId);
+    }
+
+    @Override
+    public Rent findCustomerId(int customerId) {
+        return rentRepository.findByCustomerId(customerId);
     }
 }
 

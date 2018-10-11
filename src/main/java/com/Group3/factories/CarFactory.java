@@ -6,7 +6,7 @@ import com.Group3.domain.Category;
 import java.util.Map;
 
 public class CarFactory {
-    public static Car getCar(Category category, Map<String, String> stringValues, int year, boolean status)
+    public static Car getCar(int categoryId, Map<String, String> stringValues, int year, boolean status, int customerId)
     {
         Car car = new Car.Builder()
                 .make(stringValues.get("make"))
@@ -14,7 +14,8 @@ public class CarFactory {
                 .numberPlate(stringValues.get("numberPlate"))
                 .status(status)
                 .year(year)
-                .category(category)
+                .categoryId(categoryId)
+                .customerId(customerId)
                 .build();
         return car;
     }

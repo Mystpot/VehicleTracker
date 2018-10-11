@@ -1,5 +1,6 @@
 package com.Group3.factories;
 
+import com.Group3.domain.Car;
 import com.Group3.domain.Customer;
 
 import java.util.Map;
@@ -18,6 +19,8 @@ public class CustomerFactory
                 .street(stringValues.get("street"))
                 .houseNumber(intValues.get("houseNumber"))
                 .postalCode(intValues.get("postalCode"))
+                .password(stringValues.get("password"))
+                .role(stringValues.get("role"))
                 //.invoices(invoices)
                 .build();
         return customer;
